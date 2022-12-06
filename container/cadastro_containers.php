@@ -1,10 +1,15 @@
 <?php
 
+include('lib/session.php');
+include('lib/conexao.php');
+
+if($_SESSION['tipo'] !=1 ){
+    die('O acesso a essa página é restrito! <a href="relatorio_mov.php"> VOLTAR</a>');    
+}
+
 $erro = false;
 
 if(count($_POST)>0) {
-
-    include('conexao.php');
 
     $container = $_POST['container'];
     $cliente = $_POST['cliente'];
@@ -44,27 +49,7 @@ if(count($_POST)>0) {
     <title>Cadastro de Containers</title>
 </head>
 <body>
-    <nav>
-        <ul class="nav justify-content-center">
-            <li class="nav-item">
-                <a class="nav-link active" href="cadastro_containers.php">Cadastro</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="containers.php">Containers</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="movimentacoes.php">Movimentações</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="relatorioie.php">Relatório I/E</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="relatorio_mov.php">Relatório Movimentações</a>
-            </li>
-
-
-        </ul>
-    </nav>
+    <?php include_once('lib/navbar.php'); ?>
 
     <h1 style="text-align:center;">Cadastro de Containers</h1>
     <div style="padding:0 20% ;">
