@@ -1,10 +1,19 @@
 <?php
 
+include('lib/session.php');
 
-include('conexao.php');
+include('lib/conexao.php');
 
-$sql_relatorio = " SELECT cliente, categoria, COUNT(*) AS 'qtd' FROM container GROUP BY cliente, categoria";
-$query_relatorio = $mysqli->query($sql_relatorio) or die($mysqli->error);
+if($_SESSION['tipo'] !=1 ){
+    $usuario = $_SESSION['usuario'];
+    $sql_relatorio = " SELECT cliente, categoria, COUNT(*) AS 'qtd' FROM container 
+    WHERE cliente = '$usuario'
+    GROUP BY cliente, categoria";
+    $query_relatorio = $mysqli->query($sql_relatorio) or die($mysqli->error);    
+} else {
+    $sql_relatorio = " SELECT cliente, categoria, COUNT(*) AS 'qtd' FROM container GROUP BY cliente, categoria";
+    $query_relatorio = $mysqli->query($sql_relatorio) or die($mysqli->error);    
+}
 
 ?>
 
@@ -22,26 +31,8 @@ $query_relatorio = $mysqli->query($sql_relatorio) or die($mysqli->error);
 
 </head>
 <body>
-    <nav>
-        <ul class="nav justify-content-center">
-            <li class="nav-item">
-                <a class="nav-link active" href="cadastro_containers.php">Cadastro</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="containers.php">Containers</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="movimentacoes.php">Movimentações</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="relatorioie.php">Relatório I/E</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="relatorio_mov.php">Relatório Movimentações</a>
-            </li>
-
-        </ul>
-    </nav>
+    <?php include_once('lib/navbar.php'); ?>
+    
     <h1 style="text-align:center;">Relatório de Importação/Exportação</h1>
     <div style="padding:0 30% ;">
         <table id="tabela" class="table table-striped">
