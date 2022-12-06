@@ -1,7 +1,13 @@
 <?php
 
+include('lib/session.php');
+include('lib/conexao.php');
+
+if($_SESSION['tipo'] !=1 ){
+    die('O acesso a essa página é restrito! <a href="relatorio_mov.php"> VOLTAR</a>');    
+}
+
 if(isset($_POST['excluir'])) {
-    include('conexao.php');
     $id = intval($_GET['id']);
 
     $sql_code = " DELETE FROM container WHERE id = '$id'";
