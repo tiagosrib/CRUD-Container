@@ -1,9 +1,16 @@
 <?php
 
-include('conexao.php');
+include('lib/session.php');
+include('lib/conexao.php');
 
-$sql_movimentacao = "SELECT * FROM movimentacao ORDER BY fim";
-$query_movimentacao = $mysqli->query($sql_movimentacao) or die($mysqli->error);
+if($_SESSION['tipo'] !=1 ){
+    $usuario = $_SESSION['usuario'];
+    $sql_movimentacao = "SELECT * FROM base WHERE cliente = '$usuario' ORDER BY fim  ";
+    $query_movimentacao = $mysqli->query($sql_movimentacao) or die($mysqli->error);    
+} else {
+    $sql_movimentacao = "SELECT * FROM movimentacao ORDER BY fim";
+    $query_movimentacao = $mysqli->query($sql_movimentacao) or die($mysqli->error);    
+}
 
 ?>
 
@@ -19,26 +26,7 @@ $query_movimentacao = $mysqli->query($sql_movimentacao) or die($mysqli->error);
     <title>Movimentações Cadastrados</title>
 </head>
 <body>
-    <nav>
-        <ul class="nav justify-content-center">
-            <li class="nav-item">
-                <a class="nav-link active" href="cadastro_containers.php">Cadastro</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="containers.php">Containers</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="movimentacoes.php">Movimentações</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="relatorioie.php">Relatório I/E</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="relatorio_mov.php">Relatório Movimentações</a>
-            </li>
-
-        </ul>
-    </nav>
+    <?php include_once('lib/navbar.php'); ?>
 
     <h1 style="text-align:center;">Movimentações</h1>
     <div style="padding:0 5% ;">
@@ -61,8 +49,10 @@ $query_movimentacao = $mysqli->query($sql_movimentacao) or die($mysqli->error);
                     <td><?php echo $movimentacao['inicio'] ?></td>
                     <td><?php echo $movimentacao['fim'] ?></td>
                     <td>
+                        <?php if($_SESSION['tipo'] ==1 ){ ?>
                         <a href="editar_movimentacao.php?id=<?php echo $movimentacao['id'] ?>"><button type="submit" class="btn btn-primary">Editar</button></a>
                         <a href="excluir_movimentacao.php?id=<?php echo $movimentacao['id'] ?>"><button type="submit" class="btn btn-primary">Excluir</button></a>
+                        <?php } ?>
                     </td>
                 <?php } 
                 ?>
